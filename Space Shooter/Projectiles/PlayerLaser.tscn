@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://dr2vtwa37pwp4"]
+
+[ext_resource type="PackedScene" uid="uid://d1adb37uckin5" path="res://Projectiles/Laser.tscn" id="1_wr5ag"]
+[ext_resource type="Texture2D" uid="uid://3af5wcqn6tnl" path="res://assets/player-laser.png" id="2_3kaxa"]
+[ext_resource type="Script" path="res://Projectiles/PlayerLaser.gd" id="2_tpyp0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uv5vk"]
+radius = 6.0
+height = 38.0
+
+[node name="PlayerLaser" instance=ExtResource("1_wr5ag")]
+script = ExtResource("2_tpyp0")
+vertical_direction = -1
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_3kaxa")
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CapsuleShape2D_uv5vk")
+
+[connection signal="area_entered" from="." to="." method="_on_PlayerLaser_area_entered"]

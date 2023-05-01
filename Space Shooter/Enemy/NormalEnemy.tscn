@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cagtxu0dkyidu"]
+
+[ext_resource type="PackedScene" uid="uid://c8d7xecnd51vf" path="res://Enemy/Enemy.tscn" id="1_7v7hd"]
+[ext_resource type="Texture2D" uid="uid://wd257aqt81f7" path="res://assets/enemy-black.png" id="2_38jlv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3y0u8"]
+radius = 32.0
+
+[node name="NormalEnemy" groups=["normal_enemy"] instance=ExtResource("1_7v7hd")]
+damage = 2
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_38jlv")
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CircleShape2D_3y0u8")

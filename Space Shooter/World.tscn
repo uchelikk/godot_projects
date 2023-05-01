@@ -1,0 +1,107 @@
+[gd_scene load_steps=15 format=3 uid="uid://becivi5hcf32h"]
+
+[ext_resource type="Texture2D" uid="uid://vlgikhb65bo0" path="res://assets/background.png" id="1_1tiqx"]
+[ext_resource type="Script" path="res://World.gd" id="1_vq831"]
+[ext_resource type="PackedScene" uid="uid://cyofjt6adafvc" path="res://Player/Player.tscn" id="2_lce8j"]
+[ext_resource type="PackedScene" uid="uid://cagtxu0dkyidu" path="res://Enemy/NormalEnemy.tscn" id="3_ikmlm"]
+[ext_resource type="Script" path="res://Enemy/EnemySpawner.gd" id="4_b8gab"]
+[ext_resource type="PackedScene" uid="uid://4j8c3oscx5pq" path="res://Enemy/DiverEnemy.tscn" id="4_d7dng"]
+[ext_resource type="PackedScene" uid="uid://bg7rlrqnx3r2k" path="res://Enemy/ShootingEnemy.tscn" id="7_oi1v5"]
+[ext_resource type="Script" path="res://DeathZones/DeathZone.gd" id="8_y721d"]
+[ext_resource type="PackedScene" uid="uid://btd83g3m4vgfl" path="res://ui/hud.tscn" id="9_73s2h"]
+[ext_resource type="AudioStream" uid="uid://gslxmgjymrfe" path="res://assets/bg_music.ogg" id="10_eiuni"]
+[ext_resource type="PackedScene" uid="uid://bnl53ta3cqesl" path="res://ui/game_over_menu.tscn" id="11_7caos"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1riyx"]
+emission_shape = 3
+emission_box_extents = Vector3(2.08165e-12, 270, 2.08165e-12)
+direction = Vector3(1, 2.08165e-12, 2.08165e-12)
+spread = 0.0
+gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+initial_velocity_min = -1000.0
+initial_velocity_max = -500.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_emigp"]
+size = Vector2(600, 67)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eyn8x"]
+size = Vector2(580, 87)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_vq831")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_1tiqx")
+centered = false
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 450, 800)
+
+[node name="StarsParticle" type="GPUParticles2D" parent="."]
+position = Vector2(225, 2.08165e-12)
+rotation = -1.5708
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_1riyx")
+lifetime = 1.5
+preprocess = 3.0
+
+[node name="Player" parent="." instance=ExtResource("2_lce8j")]
+position = Vector2(225, 650)
+
+[node name="EnemySpawner" type="Node2D" parent="."]
+script = ExtResource("4_b8gab")
+enemies = Array[PackedScene]([ExtResource("4_d7dng"), ExtResource("3_ikmlm"), ExtResource("7_oi1v5")])
+
+[node name="SpawnPositions" type="Node2D" parent="EnemySpawner"]
+position = Vector2(0, -38)
+
+[node name="Spawner1" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(50, 2.08165e-12)
+
+[node name="Spawner2" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(137, 2.08165e-12)
+
+[node name="Spawner3" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(225, 2.08165e-12)
+
+[node name="Spawner4" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(312, 2.08165e-12)
+
+[node name="Spawner5" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(400, 2.08165e-12)
+
+[node name="SpawnTimer" type="Timer" parent="EnemySpawner"]
+wait_time = 1.2
+autostart = true
+
+[node name="DeathZone" type="Area2D" parent="."]
+script = ExtResource("8_y721d")
+
+[node name="Top" type="CollisionShape2D" parent="DeathZone"]
+position = Vector2(229, -204)
+shape = SubResource("RectangleShape2D_emigp")
+
+[node name="Bottom" type="CollisionShape2D" parent="DeathZone"]
+position = Vector2(221, 942)
+shape = SubResource("RectangleShape2D_eyn8x")
+
+[node name="HUD" parent="." instance=ExtResource("9_73s2h")]
+
+[node name="BackgroundSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_eiuni")
+volume_db = -10.0
+autoplay = true
+
+[node name="GameOverMenu" parent="." instance=ExtResource("11_7caos")]
+offset_left = 225.0
+offset_top = 400.0
+offset_right = 225.0
+offset_bottom = 400.0
+
+[node name="EffectsLayer" type="Node2D" parent="."]
+
+[connection signal="player_dead" from="Player" to="." method="_on_player_dead"]
+[connection signal="player_took_damage" from="Player" to="." method="_on_player_took_damage"]
+[connection signal="spawn_laser" from="Player" to="." method="on_spawn_laser"]
+[connection signal="spawn_enemy" from="EnemySpawner" to="." method="_on_spawn_enemy"]
+[connection signal="timeout" from="EnemySpawner/SpawnTimer" to="EnemySpawner" method="_on_spawn_timer_timeout"]
+[connection signal="area_entered" from="DeathZone" to="DeathZone" method="_on_area_entered"]

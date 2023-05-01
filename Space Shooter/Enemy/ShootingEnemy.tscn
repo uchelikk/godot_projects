@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://bg7rlrqnx3r2k"]
+
+[ext_resource type="PackedScene" uid="uid://c8d7xecnd51vf" path="res://Enemy/Enemy.tscn" id="1_m4svc"]
+[ext_resource type="Script" path="res://Enemy/ShootingEnemy.gd" id="2_h76cc"]
+[ext_resource type="Texture2D" uid="uid://uj40lkqcepb7" path="res://assets/enemy-green.png" id="2_vguxd"]
+[ext_resource type="AudioStream" uid="uid://cqpifigvhmbet" path="res://assets/sfx_laser2.wav" id="4_jnucv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0itag"]
+radius = 29.0172
+
+[node name="ShootingEnemy" instance=ExtResource("1_m4svc")]
+script = ExtResource("2_h76cc")
+speed = 75
+hp = 3
+damage = 3
+point = 50
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_vguxd")
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CircleShape2D_0itag")
+
+[node name="Timer" type="Timer" parent="." index="2"]
+autostart = true
+
+[node name="LaserSpawnPoint" type="Marker2D" parent="." index="3"]
+
+[node name="LaserSound" type="AudioStreamPlayer" parent="." index="4"]
+stream = ExtResource("4_jnucv")
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

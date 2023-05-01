@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cyofjt6adafvc"]
+
+[ext_resource type="Texture2D" uid="uid://bjseq8t7vp3mh" path="res://assets/player.png" id="1_2ddwa"]
+[ext_resource type="Script" path="res://Player/Player.gd" id="1_rwk8t"]
+[ext_resource type="AudioStream" uid="uid://c2c10exfi8bk1" path="res://assets/sfx_laser1.wav" id="3_6ggj8"]
+[ext_resource type="AudioStream" uid="uid://bb2enrvpykwt8" path="res://assets/explode.wav" id="4_wfea8"]
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_rwk8t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_2ddwa")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.7, 0.7)
+polygon = PackedVector2Array(-4, -37, 4, -37, 13, -14, 56, 5, 37, 36, 17, 30, 13, 38, -13, 38, -18, 30, -38, 36, -57, 6, -47, -1, -45, 1, -15, -15, -13, -20, -11, -21)
+
+[node name="LaserStartPoint" type="Marker2D" parent="."]
+position = Vector2(0, -32)
+
+[node name="LaserSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6ggj8")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_wfea8")
+
+[connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]

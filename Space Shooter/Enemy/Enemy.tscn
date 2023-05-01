@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8d7xecnd51vf"]
+
+[ext_resource type="Script" path="res://Enemy/Enemy.gd" id="1_t4pm5"]
+[ext_resource type="AudioStream" uid="uid://02ag26auvilc" path="res://assets/hit.wav" id="2_inhlm"]
+
+[node name="Enemy" type="Area2D" groups=["enemy"]]
+script = ExtResource("1_t4pm5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_inhlm")
+
+[connection signal="area_entered" from="." to="." method="_on_Enemy_area_entered"]

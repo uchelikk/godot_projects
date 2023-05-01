@@ -1,0 +1,101 @@
+[gd_scene load_steps=9 format=3 uid="uid://dhw54ocou103a"]
+
+[ext_resource type="Script" path="res://ui/main_menu.gd" id="1_gmoa6"]
+[ext_resource type="FontFile" uid="uid://bvgdbsmw5jaei" path="res://assets/kenvector_future.ttf" id="1_ho1tp"]
+[ext_resource type="LabelSettings" uid="uid://cgc87akbeehae" path="res://ui/font_36.tres" id="1_pyglr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kl4lu"]
+bg_color = Color(0.235294, 0.611765, 0.521569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l1akw"]
+bg_color = Color(0.94902, 0.227451, 0.862745, 1)
+
+[sub_resource type="Gradient" id="Gradient_kxgbu"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0024k"]
+gradient = SubResource("Gradient_kxgbu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wy85w"]
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+initial_velocity_min = -250.0
+initial_velocity_max = 250.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_max = 3.0
+color = Color(0.901961, 0.384314, 0.172549, 1)
+color_ramp = SubResource("GradientTexture1D_0024k")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gmoa6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -223.0
+offset_bottom = -193.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "STAR SHOOTER"
+label_settings = ExtResource("1_pyglr")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = -60.0
+offset_right = -50.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="Start" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_ho1tp")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_kl4lu")
+text = "START"
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("1_ho1tp")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_l1akw")
+text = "QUIT"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(225, 400)
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_wy85w")
+lifetime = 2.0
+preprocess = 5.0
+
+[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

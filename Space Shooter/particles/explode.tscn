@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://cj4acw2cnjc42"]
+
+[ext_resource type="AudioStream" uid="uid://bb2enrvpykwt8" path="res://assets/explode.wav" id="1_4rp4v"]
+[ext_resource type="Script" path="res://particles/explode.gd" id="1_unhyx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aie06"]
+
+[sub_resource type="Gradient" id="Gradient_q51uj"]
+offsets = PackedFloat32Array(0, 0.547222, 0.991667, 1)
+colors = PackedColorArray(0.878431, 0, 0, 1, 0.9717, 0.242591, 0.239072, 1, 1, 0, 0.0470588, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ri2cx"]
+gradient = SubResource("Gradient_q51uj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dpfsq"]
+direction = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+spread = 180.0
+gravity = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
+initial_velocity_min = 91.5
+initial_velocity_max = 214.9
+damping_min = 40.0
+damping_max = 100.0
+scale_min = 3.0
+scale_max = 6.0
+color_ramp = SubResource("GradientTexture1D_ri2cx")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+material = SubResource("ShaderMaterial_aie06")
+emitting = false
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_dpfsq")
+lifetime = 0.45
+one_shot = true
+script = ExtResource("1_unhyx")
+
+[node name="Sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_4rp4v")
